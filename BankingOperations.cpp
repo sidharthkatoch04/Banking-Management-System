@@ -1,61 +1,56 @@
-#include "BankingOperations.hpp"
-#include <iostream>
-using namespace std;
+#include "BankOperations.hpp"
 
-bool ok(int i){ 
-    if(i<0||i>=userCount){cout<<"Invalid user\n";return false;} 
-    if(users[i].frozen){cout<<"Account frozen\n";return false;} 
-    return true; 
+void addTransaction(int index, string type, double amount, int otherId = 0) {
+    int t = users[index].transactionCount;
+
+    users[index].transactionType[t] = type;
+    users[index].transactionAmount[t] = amount;
+    users[index].relatedUserId[t] = otherId;
+
+    users[index].transactionCount++;
 }
 
-void record(int i,string t,double a,int other=0){
-    addTransaction(i,t,a,other);
+void BankOperations::deposit(int index) {
+    double amount;
+    cin >> amount;
+
+    if (amount <= 0) return;
+
+    users[index].balance += amount;
+    addTransaction(index, "Deposited", amount);
 }
 
-void checkBalance(int i){
-    if(!ok(i)) return;
-    cout<<"Balance: "<<users[i].balance<<endl;
+void BankOperations::withdraw(int index) {
+    double amount;
+    cin >> amount;
+
+    if (amount <= 0 || amount > users[index].balance) return;
+
+    users[index].balance -= amount;
+    addTransaction(index, "Withdrawn", amount);
 }
 
-void deposit(int i){
-    if(!ok(i)) return;
-    double a; cout<<"Deposit amount: "; cin>>a;
-    if(a<=0){cout<<"Invalid amount\n";return;}
-    users[i].balance+=a; record(i,"Deposit",a);
-    cout<<"Deposit successful\n";
+void BankOperations::transfer(int index) {
+    int id;
+    double amount;
+
+    cin >> id;
+    int r = findUserById(id);
+
+    if (r == -1) return;
+
+    cin >> amount;
+    if (amount <= 0 || amount > users[index].balance) return;
+
+    users[index].balance -= amount;
+    users[r].balance += amount;
+
+    addTransaction(index, "Transferred", amount, id);
+    addTransaction(r, "Received", amount, users[index].id);
 }
 
-void withdraw(int i){
-    if(!ok(i)) return;
-    double a; cout<<"Withdraw amount: "; cin>>a;
-    if(a<=0||a>users[i].balance){cout<<"Invalid amount\n";return;}
-    users[i].balance-=a; record(i,"Withdraw",a);
-    cout<<"Withdrawal successful\n";
-}
-
-void transferMoney(int s){
-    if(!ok(s)) return;
-    int id; double a;
-    cout<<"Receiver ID: "; cin>>id;
-    int r=findUserById(id);
-    if(r==-1){cout<<"User not found\n";return;}
-    cout<<"Amount: "; cin>>a;
-    if(a<=0||a>users[s].balance){cout<<"Invalid amount\n";return;}
-    users[s].balance-=a; users[r].balance+=a;
-    record(s,"Transfer Sent",a,id);
-    record(r,"Transfer Received",a,users[s].id);
-    cout<<"Transfer successful\n";
-}
-
-void viewTransactions(int i){
-    if(!ok(i)) return;
-    if(users[i].transactionCount==0){cout<<"No transactions\n";return;}
-    cout<<"\nTransaction History:\n";
-    for(int k=0;k<users[i].transactionCount;k++){
-        cout<<k+1<<". "<<users[i].transactionType[k]
-            <<" | "<<users[i].transactionAmount[k];
-        if(users[i].relatedUserId[k]!=0)
-            cout<<" | ID "<<users[i].relatedUserId[k];
-        cout<<endl;
+    void BankOperations: viewTransactions(int index) {
+        for (int i = 0; i < users[index].transactionCount; i++) {
+            cout << users[index].transactionType[i] << " " << users[index].transactionAmount[i] << endl;
+        }
     }
-}
