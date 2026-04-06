@@ -3,10 +3,12 @@
 
 #include "User.hpp"
 
-class BankOperations{
+class BankOperations {
 public:
-void deposit(int index);
-void withdraw(int index);
-void transfer(int index);
-void viewTransactions(int index);
+    void deposit (int index);
+    void withdraw (int index);
+    void transfer (int index);
+    void viewTransactions (int index);
 };
+
+#endif
