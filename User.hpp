@@ -50,25 +50,18 @@ void registerUser() {
         cout << "Error: " << msg << endl;
     }
 }
-
 int login() {
     string username, password;
-
     cout << "Username: ";
     cin >> username;
-
     cout << "Password: ";
     cin >> password;
-
     int index = findUserByUsername(username);
-
     if (index == -1) return -1;
     if (users[index].password != password) return -1;
     if (users[index].frozen) return -1;
-
     return index;
 }
-
 void User::showMenu(int index) {
-    cout << "User Menu\n";
+    cout << "User Menu";
 }
