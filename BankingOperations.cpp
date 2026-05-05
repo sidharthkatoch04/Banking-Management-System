@@ -1,4 +1,4 @@
-#include "BankOperations.hpp"
+#include "BankingOperations.hpp
 void addTransaction(int index, string type, double amount, int otherId = 0) {
     int t = users[index].transactionCount;
     users[index].transactionType[t] = type;
