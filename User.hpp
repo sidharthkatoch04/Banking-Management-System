@@ -1,70 +1,32 @@
 #ifndef USER_HPP
 #define USER_HPP
-#include "User.hpp"
-
-User users[MAX_USERS];
-int userCount = 0;
-
-User::User() {
-    balance = 0;
-    frozen = false;
-    transactionCount = 0;
-}
-
-int findUserByUsername(string username) {
-    for (int i = 0; i < userCount; i++) {
-        if (users[i].username == username)
-            return i;
-    }
-    return -1;
-}
-
-int findUserById(int id) {
-    for (int i = 0; i < userCount; i++) {
-        if (users[i].id == id)
-            return i;
-    }
-    return -1;
-}
-
-void registerUser() {
-    try {
-        string username, password;
-
-        cout << "Enter username: ";
-        cin >> username;
-
-        if (findUserByUsername(username) != -1)
-            throw "Username already exists!";
-
-        cout << "Enter password: ";
-        cin >> password;
-
-        users[userCount].id = userCount + 1;
-        users[userCount].username = username;
-        users[userCount].password = password;
-
-        userCount++;
-
-        cout << "Registration successful!\n";
-    }
-    catch (const char* msg) {
-        cout << "Error: " << msg << endl;
-    }
-}
-int login() {
-    string username, password;
-    cout << "Username: ";
-    cin >> username;
-    cout << "Password: ";
-    cin >> password;
-    int index = findUserByUsername(username);
-    if (index == -1) return -1;
-    if (users[index].password != password) return -1;
-    if (users[index].frozen) return -1;
-    return index;
-}
-void User::showMenu(int index) {
-    cout << "User Menu";
-}
+#include <iostream>
+#include <string>
+using namespace std;
+const int MAX_USERS = 100;
+const int MAX_TRANSACTIONS = 200;
+class Account {
+public:
+    virtual void showMenu(int index) = 0;
+};
+class User : public Account {
+public:
+    int id;
+    string username;
+    string password;
+    double balance;
+    bool frozen;
+    string transactionType[MAX_TRANSACTIONS];
+    double transactionAmount[MAX_TRANSACTIONS];
+    int relatedUserId[MAX_TRANSACTIONS];
+    int transactionCount;
+    User();
+    void showMenu(int index);
+};
+int findUserByUsername(string username);
+int findUserById(int id);
+void registerUser();
+int login();
+extern User users[MAX_USERS];
+extern int userCount;
 #endif
