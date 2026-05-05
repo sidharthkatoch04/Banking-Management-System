@@ -34,7 +34,7 @@ void BankOperations::transfer(int index) {
     addTransaction(r, "Received", amount, users[index].id);
 }
 void BankOperations::viewTransactions(int index) {
-    for (int i = 0; i < users[index].transactionCount, i++) {
+    for (int i = 0; i < users[index].transactionCount; i++) {
         cout << users[index].transactionType[i] << " " << users[index].transactionAmount[i] << endl;
         }
 }
