@@ -1,8 +1,8 @@
-#ifndef USER_HPP
-#define USER_HPP
 #include <iostream>
 #include <string>
 using namespace std;
+#ifndef USER_HPP
+#define USER_HPP
 const int MAX_USERS = 100;
 const int MAX_TRANSACTIONS = 200;
 class Account {
