@@ -1,6 +1,6 @@
+#include "User.hpp"
 #ifndef USER_HPP
 #define USER_HPP
-#include "User.hpp"
 
 User users[MAX_USERS];
 int userCount = 0;
